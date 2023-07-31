@@ -1,3 +1,3 @@
 package com.practice.authService.models;
 
-public record GetAns(String mess) { }
+public record GetAns(String message) { }

@@ -10,7 +10,7 @@ import com.practice.authService.models.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping
+
 @RestController
 public class AuthController {
 
