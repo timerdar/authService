@@ -2,6 +2,7 @@ package com.practice.authService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 import com.practice.authService.models.User;
 
@@ -14,20 +15,26 @@ public class AuthController {
 
     @PostMapping
     public ResponseEntity<String> Post(@RequestBody User user) throws IllegalArgumentException{
-            if (user.getDate() == null) {
-                Date registrationDate = new Date();
-                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-                user.setDate(formatter.format(registrationDate));
-            }
-            if (user.getLogin() == null || user.getPassword() == null){
-                throw new IllegalArgumentException("Login and password must not be null.");
-            }
-            return ResponseEntity.ok(user.toString());
+        if (user.getDate() == null) {
+            Date registrationDate = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            user.setDate(formatter.format(registrationDate));
+        }
+        if (user.getLogin() == null || user.getPassword() == null || user.getEmail() == null) {
+            throw new IllegalArgumentException("Login, password or email must not be null.");
+        }
+        DatabaseController dbc = new DatabaseController();
+        dbc.insertUserData(user);
+        return ResponseEntity.ok(user + " added");
     }
 
-    @GetMapping
-    public ResponseEntity<String> Get(){
-        String message = "{\"message\":\"HelloWorld\"}";
-        return ResponseEntity.ok(message);
+    @GetMapping(value = "/login={login}")
+    public ResponseEntity<String> Get(@PathVariable String login) throws NoSuchElementException{
+        DatabaseController dbc = new DatabaseController();
+        User user = dbc.selectByLogin(login);
+        if(user.getLogin() == null){
+            throw new NoSuchElementException("User with login \"" + login + "\" not found");
+        }
+        return ResponseEntity.ok(user.fullToString());
     }
 }
