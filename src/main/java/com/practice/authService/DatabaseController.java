@@ -32,7 +32,7 @@ public class DatabaseController {
         return user;
     }
 
-    public int insertUserData(User user){
+    public int insertUserData(User user) throws IllegalArgumentException{
         String query = "insert into " + table1 + "(login, password, reg_date) values(?, ?, ?);"+
                 "insert into " + table2 + "(login, email) values(?, ?)";
 
@@ -48,7 +48,7 @@ public class DatabaseController {
 
             rowsAffected = prepStatement.executeUpdate();
         }catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalArgumentException(e.getMessage());
         }
         return rowsAffected;
     }
