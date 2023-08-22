@@ -35,6 +35,9 @@ public class AuthController {
         if(user.getLogin() == null){
             throw new NoSuchElementException("User with login \"" + login + "\" not found");
         }
+
+        LogWriter writer = new LogWriter();
+        writer.writeToFile("get_logs.txt", user.fullToString());
         return ResponseEntity.ok(user.fullToString());
     }
 }
