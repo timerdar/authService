@@ -5,7 +5,7 @@ import com.practice.authService.models.User;
 import java.sql.*;
 
 public class DatabaseController {
-    private static final String db_url = "jdbc:postgresql://192.168.1.111:5432/plug_db";
+    private static final String db_url = "jdbc:postgresql://localhost:5432/plug_db";
     private static final String db_user = "admin";
     private static final String db_password = "admin";
     private static final String table1 = "users";
